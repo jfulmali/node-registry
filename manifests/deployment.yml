@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: jfulmalinoderegistry 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jfulmalinoderegistry
+  template:
+    metadata:
+      labels:
+        app: jfulmalinoderegistry 
+    spec:
+      containers:
+        - name: jfulmalinoderegistry 
+          image: noderegistryprepx.azurecr.io/jfulmalinoderegistry
+          ports:
+          - containerPort: 8080
