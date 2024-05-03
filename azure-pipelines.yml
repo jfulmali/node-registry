@@ -41,6 +41,8 @@ stages:
               echo '-------'
               whoami
               curl ifconfig.me    
+              docker --version
+              
               
 #     steps:
 #     - task: Docker@2
