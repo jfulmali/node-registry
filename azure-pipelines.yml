@@ -30,7 +30,7 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool: PREP-X
+    pool: PrepXAD
       #vmImage: $(vmImageName)
     steps:
        - task: CmdLine@2
