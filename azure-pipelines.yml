@@ -7,7 +7,7 @@ variables:
   # imagePullSecret: acr-secret
   # imageRepository: prep-nursing
   # containerRegistry: prepxacr.azurecr.io
-  branch: $(Build.SourceBranch)
+  branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
 
 stages:
 - stage: Build
@@ -25,4 +25,4 @@ stages:
           whoami
           curl ifconfig.me
           # imageTag=$(if eq '$(Build.SourceBranch)' 'refs/heads/main' 'prod' '$(Build.SourceBranchName)')
-          echo "Branch Name: ${{ variables.branch }}"
+          echo "Branch Name: ${{ variables.branchName }}"
