@@ -19,7 +19,7 @@ stages:
   - job: DockerBuildPush
     displayName: Docker Build and Push
     steps:
-    - bash: echo "Triggered Branch: $(TriggeredBranch)"
+    - script: echo "Triggered Branch"
       displayName: Display Triggered Branch
 
     - bash: |
