@@ -19,8 +19,8 @@ stages:
   - job: DockerBuildPush
     displayName: Docker Build and Push
     steps:
-    - script: echo "Triggered Branch: $(TriggeredBranch)"
-      displayName: Display Triggered Branch
+    # - script: echo "Triggered Branch: $(TriggeredBranch)"
+    #   displayName: Display Triggered Branch
 
     - bash: |
         if [ "$(TriggeredBranch)" == "refs/heads/main" ] || [ "$(TriggeredBranch)" == "refs/heads/stage" ]; then
