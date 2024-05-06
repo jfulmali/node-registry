@@ -5,20 +5,29 @@ trigger:
 variables:
 - name: TriggeredBranch
   value: $[ 'refs/heads/$(Build.SourceBranchName)' ]
+- name: DockerImageName
+  value: mydockerimage
+- name: DockerRegistry
+  value: mydockerregistry.azurecr.io
+- name: TagName
+  value: latest
 
 stages:
 - stage: Build
   displayName: Build Stage
   jobs:
-  - job: CheckBranch
-    displayName: Check Branch Job
+  - job: DockerBuildPush
+    displayName: Docker Build and Push
     steps:
-    - script: |
-        if [ "$(TriggeredBranch)" == "refs/heads/main" ]; then
-          echo "I am from main branch"
-        elif [ "$(TriggeredBranch)" == "refs/heads/stage" ]; then
-          echo "I am from stage branch"
+    - script: echo "Triggered Branch: $(TriggeredBranch)"
+      displayName: Display Triggered Branch
+
+    - bash: |
+        if [ "$(TriggeredBranch)" == "refs/heads/main" ] || [ "$(TriggeredBranch)" == "refs/heads/stage" ]; then
+          echo "Building Docker image..."
+          docker build -t $(DockerRegistry)/$(DockerImageName):$(TagName) .
+          docker push $(DockerRegistry)/$(DockerImageName):$(TagName)
         else
-          echo "I am from nowhere"
+          echo "Skipping Docker build and push as not on main or stage branch"
         fi
-      displayName: Check Branch Name
+      displayName: Docker Build and Push
