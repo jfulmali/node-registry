@@ -1,39 +1,24 @@
 trigger:
-  - main
-  - stage
+- main
+- stage
 
 variables:
-  tag: '$(Build.BuildId)'
-  branchName: $( echo "$(Build.SourceBranch)" | sed 's/refs\/heads\///' )
+- name: TriggeredBranch
+  value: $[ 'refs/heads/$(Build.SourceBranchName)' ]
 
 stages:
 - stage: Build
-  displayName: Build Agent Images
+  displayName: Build Stage
   jobs:
-  - job: Build
-    displayName: Build
+  - job: CheckBranch
+    displayName: Check Branch Job
     steps:
-    - ${{ if eq(variables['branchName'], 'main') }}:
-      - script: |
-          echo $(Agent.BuildDirectory)
-          echo '-------'
-          whoami
-          curl ifconfig.me
-          echo "My branch name is main"
-        displayName: 'Build and Push Image for Main'
-    - ${{ if eq(variables['branchName'], 'stage') }}:
-      - script: |
-          echo $(Agent.BuildDirectory)
-          echo '-------'
-          whoami
-          curl ifconfig.me
-          echo "My branch name is stage"
-        displayName: 'Build and Push Image for Stage'
-    - ${{ if and(not(eq(variables['branchName'], 'main')), not(eq(variables['branchName'], 'stage'))) }}:
-      - script: |
-          echo $(Agent.BuildDirectory)
-          echo '-------'
-          whoami
-          curl ifconfig.me
-          echo "Branch Name: ${{ variables.branchName }}"
-        displayName: 'Build and Push Image for Other Branches'
+    - script: |
+        if [ "$(TriggeredBranch)" == "refs/heads/main" ]; then
+          echo "I am from main branch"
+        elif [ "$(TriggeredBranch)" == "refs/heads/stage" ]; then
+          echo "I am from stage branch"
+        else
+          echo "I am from nowhere"
+        fi
+      displayName: Check Branch Name
