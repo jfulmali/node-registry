@@ -4,7 +4,7 @@ trigger:
 
 variables:
 - name: TriggeredBranch
-  value: $[ 'refs/heads/$(Build.SourceBranchName)' ]
+  value: $(Build.SourceBranchName)
 - name: DockerImageName
   value: mydockerimage
 - name: DockerRegistry
@@ -22,12 +22,12 @@ stages:
     - script: echo 'Triggered Branch $(TriggeredBranch)'
       displayName: Display Triggered Branch
 
-    - bash: |
-        if [ "$(TriggeredBranch)" == "refs/heads/main" ] || [ "$(TriggeredBranch)" == "refs/heads/stage" ]; then
-          echo "Building Docker image..."
-          docker build -t $(DockerRegistry)/$(DockerImageName):$(TagName) .
-          docker push $(DockerRegistry)/$(DockerImageName):$(TagName)
-        else
-          echo "Skipping Docker build and push as not on main or stage branch"
-        fi
-      displayName: Docker Build and Push
+    # - bash: |
+    #     if [ "$(TriggeredBranch)" == "refs/heads/main" ] || [ "$(TriggeredBranch)" == "refs/heads/stage" ]; then
+    #       echo "Building Docker image..."
+    #       docker build -t $(DockerRegistry)/$(DockerImageName):$(TagName) .
+    #       docker push $(DockerRegistry)/$(DockerImageName):$(TagName)
+    #     else
+    #       echo "Skipping Docker build and push as not on main or stage branch"
+    #     fi
+    #   displayName: Docker Build and Push
