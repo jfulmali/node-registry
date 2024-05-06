@@ -19,9 +19,9 @@ stages:
       displayName: 'Build and Push Image'
       inputs:
         script: |
-          # echo $(Agent.BuildDirectory)
-          # echo '-------'
-          # whoami
-          # curl ifconfig.me
+          echo $(Agent.BuildDirectory)
+          echo '-------'
+          whoami
+          curl ifconfig.me
           imageTag=$(if eq '$(Build.SourceBranch)' 'refs/heads/main' 'prod' '$(Build.SourceBranchName)')
-          echo $imageTag
+          echo "Image Tag: $imageTag"
