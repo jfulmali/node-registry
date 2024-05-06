@@ -7,7 +7,7 @@ variables:
   # imagePullSecret: acr-secret
   # imageRepository: prep-nursing
   # containerRegistry: prepxacr.azurecr.io
-  branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
+  branchName: $(echo "$(Build.SourceBranch)" | sed 's/refs\/heads\///')
 
 stages:
 - stage: Build
