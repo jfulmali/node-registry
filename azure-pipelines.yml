@@ -29,7 +29,7 @@ stages:
           curl ifconfig.me
           echo "My branch name is stage"
         displayName: 'Build and Push Image for Stage'
-    - ${{ if ne(variables['branchName'], 'main') && ne(variables['branchName'], 'stage') }}:
+    - ${{ if and(not(eq(variables['branchName'], 'main')), not(eq(variables['branchName'], 'stage'))) }}:
       - script: |
           echo $(Agent.BuildDirectory)
           echo '-------'
