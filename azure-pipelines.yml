@@ -4,10 +4,7 @@ trigger:
 
 variables:
   tag: '$(Build.BuildId)'
-  # imagePullSecret: acr-secret
-  # imageRepository: prep-nursing
-  # containerRegistry: prepxacr.azurecr.io
-  branchName: $(echo "$(Build.SourceBranch)" | sed 's/refs\/heads\///')
+  branchName: $( echo "$(Build.SourceBranch)" | sed 's/refs\/heads\///' )
 
 stages:
 - stage: Build
@@ -16,13 +13,27 @@ stages:
   - job: Build
     displayName: Build
     steps:
-    - task: CmdLine@2
-      displayName: 'Build and Push Image'
-      inputs:
-        script: |
+    - ${{ if eq(variables['branchName'], 'main') }}:
+      - script: |
           echo $(Agent.BuildDirectory)
           echo '-------'
           whoami
           curl ifconfig.me
-          # imageTag=$(if eq '$(Build.SourceBranch)' 'refs/heads/main' 'prod' '$(Build.SourceBranchName)')
+          echo "My branch name is main"
+        displayName: 'Build and Push Image for Main'
+    - ${{ if eq(variables['branchName'], 'stage') }}:
+      - script: |
+          echo $(Agent.BuildDirectory)
+          echo '-------'
+          whoami
+          curl ifconfig.me
+          echo "My branch name is stage"
+        displayName: 'Build and Push Image for Stage'
+    - ${{ if ne(variables['branchName'], 'main') && ne(variables['branchName'], 'stage') }}:
+      - script: |
+          echo $(Agent.BuildDirectory)
+          echo '-------'
+          whoami
+          curl ifconfig.me
           echo "Branch Name: ${{ variables.branchName }}"
+        displayName: 'Build and Push Image for Other Branches'
