@@ -25,4 +25,4 @@ stages:
           whoami
           curl ifconfig.me
           # imageTag=$(if eq '$(Build.SourceBranch)' 'refs/heads/main' 'prod' '$(Build.SourceBranchName)')
-          echo "Image Tag: $branch"
+          echo "Branch Name: ${{ variables.branch }}"
